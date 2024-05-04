@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/wordfinder-api/FileContentIndex
+/wordfinder-api/bin/Debug/net8.0
+/wordfinder-api/obj
+/wordfinder-services/bin/Debug/net8.0
+/wordfinder-services/obj
+/wordfinder-services-tests/bin/Debug/net8.0
+/wordfinder-services-tests/obj
