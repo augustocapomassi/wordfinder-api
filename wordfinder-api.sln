@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wordfinder-api", "wordfinder-api\wordfinder-api.csproj", "{C7DDF5D7-44C4-44BD-98FB-71C50C2A0BAD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wordfinder-services", "wordfinder-services\wordfinder-services.csproj", "{E07C5F3B-F8A5-421F-9180-9CE7D27ADB21}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wordfinder-services-tests", "wordfinder-services-tests\wordfinder-services-tests.csproj", "{D36E37B9-DF85-4323-ADAD-C88FF723EA54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C7DDF5D7-44C4-44BD-98FB-71C50C2A0BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7DDF5D7-44C4-44BD-98FB-71C50C2A0BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7DDF5D7-44C4-44BD-98FB-71C50C2A0BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7DDF5D7-44C4-44BD-98FB-71C50C2A0BAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E07C5F3B-F8A5-421F-9180-9CE7D27ADB21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E07C5F3B-F8A5-421F-9180-9CE7D27ADB21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E07C5F3B-F8A5-421F-9180-9CE7D27ADB21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E07C5F3B-F8A5-421F-9180-9CE7D27ADB21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D36E37B9-DF85-4323-ADAD-C88FF723EA54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D36E37B9-DF85-4323-ADAD-C88FF723EA54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D36E37B9-DF85-4323-ADAD-C88FF723EA54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D36E37B9-DF85-4323-ADAD-C88FF723EA54}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBF20C7F-A603-40FA-975A-7D63998D4F64}
+	EndGlobalSection
+EndGlobal
