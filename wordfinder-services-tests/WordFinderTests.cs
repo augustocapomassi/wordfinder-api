@@ -5,11 +5,12 @@ namespace WordFinder.Services.Tests;
 
 public class WordFinderServiceTests
 {
+    private string[] wordsToFind = ["chill", "cold", "wind"];
+
     [Fact]
     public void Find_ShouldReturnTop10WordsInTheCorrespondingOrder_WhenWordsHorizontalAreFound()
     {
         // Arrange
-        string[] wordsToFind = ["chill", "cold", "wind"];
         string[] matrix = [
             "chill",
             "coldx",
@@ -23,7 +24,7 @@ public class WordFinderServiceTests
         var finder = new WordFinder(matrix);
 
         // Act
-        var foundWords = finder.Find(wordsToFind).ToArray();
+        var foundWords = finder.Find(this.wordsToFind).ToArray();
 
         // Assert
         foundWords.Count().Should().Be(3);
@@ -36,7 +37,30 @@ public class WordFinderServiceTests
     public void Find_ShouldReturnTop10WordsInTheCorrespondingOrder_WhenWordsVerticalAreFound()
     {
         // Arrange
-        string[] wordsToFind = ["chill", "cold", "wind"];
+        string[] matrix = [
+            "cxcwal",
+            "cxowal",
+            "hxlwal",
+            "ixdial",
+            "lxcnal",
+            "lxcdal",
+            ];
+        var finder = new WordFinder(matrix);
+
+        // Act
+        var foundWords = finder.Find(this.wordsToFind).ToArray();
+
+        // Assert
+        foundWords.Count().Should().Be(3);
+        foundWords[0].Should().Be("chill");
+        foundWords[1].Should().Be("cold");
+        foundWords[2].Should().Be("wind");
+    }
+
+    [Fact]
+    public void Find_ShouldReturnTop10WordsInTheCorrespondingOrder_WhenWordsHorizonlalAndVerticalAreFound()
+    {
+        // Arrange
         string[] matrix = [
             "cxchal",
             "hxcold",
@@ -49,7 +73,7 @@ public class WordFinderServiceTests
         var finder = new WordFinder(matrix);
 
         // Act
-        var foundWords = finder.Find(wordsToFind).ToArray();
+        var foundWords = finder.Find(this.wordsToFind).ToArray();
 
         // Assert
         foundWords.Count().Should().Be(3);
@@ -63,11 +87,10 @@ public class WordFinderServiceTests
     {
         // Arrange
         IEnumerable<string> matrix = ["abcd", "efgh", "ijkl"];
-        IEnumerable<string> wordstream = ["mnop", "qrst", "uvwx"];
         var finder = new WordFinder(matrix);
 
         // Act
-        var foundWords = finder.Find(wordstream);
+        var foundWords = finder.Find(this.wordsToFind);
 
         // Assert
         foundWords.Should().BeEmpty();
