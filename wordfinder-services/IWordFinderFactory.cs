@@ -2,5 +2,5 @@
 
 internal interface IWordFinderFactory
 {
-    Task<WordFinder> Create(IEnumerable<string> matrix);
+    Task<WordFinder> Create(string[] matrix);
 }

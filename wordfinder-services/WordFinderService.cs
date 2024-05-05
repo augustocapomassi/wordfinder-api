@@ -10,7 +10,7 @@ internal class WordFinderService : IWordFinderService
         this.wordFinderFactory = wordFinderFactory;
     }
 
-    public async ValueTask<IEnumerable<string>> FindWords(IEnumerable<string> wordsToFind)
+    public ValueTask<IEnumerable<string>> FindWords(IEnumerable<string> wordsToFind)
     {
         if (wordFinderFactory == null)
         {
@@ -19,12 +19,12 @@ internal class WordFinderService : IWordFinderService
 
         var foundWords = wordFinder!.Find(wordsToFind);
 
-        return foundWords;
+        return ValueTask.FromResult(foundWords);
     }
 
     public async Task SetMatrix(IEnumerable<string> matrix)
     {
-        wordFinder = await wordFinderFactory.Create(matrix);
+        wordFinder = await wordFinderFactory.Create(matrix.ToArray());
     }
 }
 

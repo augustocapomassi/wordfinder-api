@@ -1,82 +1,97 @@
 ﻿namespace WordFinder.Services;
 
-internal class WordFinder
+internal class WordFinder(IEnumerable<string> matrix)
 {
-    private readonly TrieNode root = new TrieNode();
+    private readonly char[,] matrix = ConvertToGrid(matrix.ToArray());
 
-    public WordFinder(IEnumerable<string> matrix)
+    static char[,] ConvertToGrid(string[] matrix)
     {
-        foreach (var word in matrix)
+        int rows = matrix.Count();
+        int cols = matrix.First().Length;
+
+        char[,] grid = new char[rows, cols];
+
+        int i = 0;
+        foreach (string row in matrix)
         {
-            InsertWord(word);
+            for (int j = 0; j < cols; j++)
+            {
+                grid[i, j] = row[j];
+            }
+            i++;
         }
+
+        return grid;
     }
 
-    private void InsertWord(string word)
+    public IEnumerable<string> Find(IEnumerable<string> wordsToFind)
     {
-        var node = root;
-        foreach (var ch in word)
-        {
-            if (!node.Children.TryGetValue(ch, out TrieNode? value))
-            {
-                value = new TrieNode();
-                node.Children[ch] = value;
-            }
-            node = value;
-        }
-        node.IsEndOfWord = true;
-    }
+        var wordsCount = new Dictionary<string, int>();
 
-    public IEnumerable<string> Find(IEnumerable<string> wordstream)
-    {
-        var wordCounts = new Dictionary<string, int>();
+        int rows = this.matrix.GetLength(0);
+        int cols = this.matrix.GetLength(1);
 
-        foreach (var word in wordstream)
+        foreach (string word in wordsToFind)
         {
-            var visited = new HashSet<string>();
-            foreach (var position in root.Children.Keys)
-            {
-                FindWords(word, root.Children[position], position.ToString(), visited, wordCounts);
-            }
+            this.CheckHorizontally(wordsCount, rows, cols, word);
+
+            this.CheckVertically(wordsCount, rows, cols, word);
         }
 
-        return wordCounts.OrderByDescending(kv => kv.Value)
+        return wordsCount.OrderByDescending(kv => kv.Value)
             .Take(10)
             .Select(kv => kv.Key);
     }
 
-    private static void FindWords(
-        string word,
-        TrieNode node,
-        string path,
-        HashSet<string> visited,
-        Dictionary<string, int> wordCounts)
+    private void CheckHorizontally(Dictionary<string, int> wordsCount, int rows, int cols, string word)
     {
-        if (node.IsEndOfWord && !visited.Contains(path))
+        for (int i = 0; i < rows; i++)
         {
-            if (!wordCounts.TryGetValue(word, out int value))
+            for (int j = 0; j <= cols - word.Length; j++)
             {
-                value = 0;
-                wordCounts[word] = value;
-            }
-            wordCounts[word] = ++value;
-            visited.Add(path);
-        }
-
-        foreach (var position in node.Children.Keys)
-        {
-            var nextNode = node.Children[position];
-            if (word.StartsWith(path + position))
-            {
-                FindWords(word, nextNode, path + position, visited, wordCounts);
+                string horizontal = string.Empty;
+                for (int k = 0; k < word.Length; k++)
+                {
+                    horizontal += this.matrix[i, j + k];
+                }
+                if (horizontal == word)
+                {
+                    AddWordAndIncreaseCounter(wordsCount, word);
+                    break;
+                }
             }
         }
     }
 
-    private class TrieNode
+    private void CheckVertically(Dictionary<string, int> wordsCount, int rows, int cols, string word)
     {
-        public Dictionary<char, TrieNode> Children { get; } = [];
+        for (int i = 0; i < cols; i++)
+        {
+            for (int j = 0; j <= rows - word.Length; j++)
+            {
+                string vertical = string.Empty;
+                for (int k = 0; k < word.Length; k++)
+                {
+                    vertical += this.matrix[j + k, i];
+                }
+                if (vertical == word)
+                {
+                    AddWordAndIncreaseCounter(wordsCount, word);
+                    break;
+                }
+            }
+        }
+    }
 
-        public bool IsEndOfWord { get; set; }
+    private static void AddWordAndIncreaseCounter(Dictionary<string, int> wordCounter, string word)
+    {
+        if (wordCounter.TryGetValue(word, out _))
+        {
+            wordCounter[word]++;
+
+            return;
+        }
+
+        wordCounter[word] = 1;
     }
 }

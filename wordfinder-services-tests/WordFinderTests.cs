@@ -1,42 +1,75 @@
-﻿using AutoFixture;
-using AutoFixture.AutoMoq;
+﻿using FluentAssertions;
 using Xunit;
 
 namespace WordFinder.Services.Tests;
 
 public class WordFinderServiceTests
 {
-    private readonly IFixture fixture = new Fixture().Customize(new AutoMoqCustomization { ConfigureMembers = true });
-
     [Fact]
-    public void Find_ShouldReturnTop10Words_WhenWordsAreFound()
+    public void Find_ShouldReturnTop10WordsInTheCorrespondingOrder_WhenWordsHorizontalAreFound()
     {
         // Arrange
-        var matrix = new List<string> { "chill", "crrld", "olwdd", "cold" };
-        var wordstream = new List<string> { "chill", "cold", "wind", "chill", "chill", "cold", "cold", "cold", "cold", "wind" };
+        string[] wordsToFind = ["chill", "cold", "wind"];
+        string[] matrix = [
+            "chill",
+            "coldx",
+            "windx",
+            "chill",
+            "chill",
+            "coldx",
+            "coldx",
+            "coldx",
+            "windx"];
         var finder = new WordFinder(matrix);
 
         // Act
-        var foundWords = finder.Find(wordstream);
+        var foundWords = finder.Find(wordsToFind).ToArray();
 
         // Assert
-        Assert.Equal(2, foundWords.Count());
-        Assert.Contains("chill", foundWords);
-        Assert.Contains("cold", foundWords);
+        foundWords.Count().Should().Be(3);
+        foundWords[0].Should().Be("cold");
+        foundWords[1].Should().Be("chill");
+        foundWords[2].Should().Be("wind");
+    }
+
+    [Fact]
+    public void Find_ShouldReturnTop10WordsInTheCorrespondingOrder_WhenWordsVerticalAreFound()
+    {
+        // Arrange
+        string[] wordsToFind = ["chill", "cold", "wind"];
+        string[] matrix = [
+            "cxchal",
+            "hxcold",
+            "ixwind",
+            "lxcsil",
+            "lchill",
+            "coldtx",
+            "coldrt"
+            ];
+        var finder = new WordFinder(matrix);
+
+        // Act
+        var foundWords = finder.Find(wordsToFind).ToArray();
+
+        // Assert
+        foundWords.Count().Should().Be(3);
+        foundWords[0].Should().Be("cold");
+        foundWords[1].Should().Be("chill");
+        foundWords[2].Should().Be("wind");
     }
 
     [Fact]
     public void Find_ShouldReturnEmptyList_WhenNoWordsFound()
     {
         // Arrange
-        var matrix = new List<string> { "abcd", "efgh", "ijkl" };
-        var wordstream = new List<string> { "mnop", "qrst", "uvwx" };
+        IEnumerable<string> matrix = ["abcd", "efgh", "ijkl"];
+        IEnumerable<string> wordstream = ["mnop", "qrst", "uvwx"];
         var finder = new WordFinder(matrix);
 
         // Act
         var foundWords = finder.Find(wordstream);
 
         // Assert
-        Assert.Empty(foundWords);
+        foundWords.Should().BeEmpty();
     }
 }
